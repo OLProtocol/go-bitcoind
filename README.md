@@ -6,7 +6,7 @@ A Golang client library wrapping the bitcoind JSON RPC API
 
 Installation
 -----
-	$ go get github.com/toorop/go-bitcoind
+	$ go get github.com/OLProtocol/go-bitcoind
 
 
 Usage
@@ -15,7 +15,7 @@ Usage
 	package main
 
 	import (
-		"github.com/toorop/go-bitcoind"
+		"github.com/OLProtocol/go-bitcoind"
 		"log"
 	)
 
@@ -55,7 +55,7 @@ Documentation
 -----
 Click on the button below to access the full documentation:
 
-[![GoDoc](https://godoc.org/github.com/toorop/go-bitcoind?status.png)](https://godoc.org/github.com/toorop/go-bitcoind)	
+[![GoDoc](https://godoc.org/github.com/OLProtocol/go-bitcoind?status.png)](https://godoc.org/github.com/OLProtocol/go-bitcoind)	
 
 
 

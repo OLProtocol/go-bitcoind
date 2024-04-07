@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"github.com/toorop/go-bitcoind"
+	"github.com/OLProtocol/go-bitcoind"
 )
 
 const (
