@@ -299,6 +299,57 @@ func (b *Bitcoind) GetMemPoolInfo() (*MemPoolInfo, error) {
 	return memPoolInfo, err
 }
 
+type RawMemPool struct {
+	Txids           []string `json:"txids"`
+	MempoolSequence int      `json:"mempool_sequence"`
+}
+
+// GetRawMemPool returns an object containing RawMemPool
+func (b *Bitcoind) GetRawMemPool() (*RawMemPool, error) {
+	// verbose = false,  mempool_sequence = true
+	r, err := b.client.call("getrawmempool", []interface{}{false, true})
+	if err = handleError(err, &r); err != nil {
+		return nil, err
+	}
+	rawMemPool := &RawMemPool{}
+	err = json.Unmarshal(r.Result, rawMemPool)
+	return rawMemPool, err
+}
+
+type MemPoolEntry struct {
+	Vsize           int    `json:"vsize"`
+	Weight          int    `json:"weight"`
+	Time            int    `json:"time"`
+	Height          int    `json:"height"`
+	DescendantCount int    `json:"descendantcount"`
+	DescendantSize  int    `json:"descendantsize"`
+	AncestorCount   int    `json:"ancestorcount"`
+	AncestorSize    int    `json:"ancestorsize"`
+	Wtxid           string `json:"wtxid"`
+	Fees            struct {
+		Base       float64 `json:"base"`
+		Modified   float64 `json:"modified"`
+		Ancestor   float64 `json:"ancestor"`
+		Descendant float64 `json:"descendant"`
+	} `json:"fees"`
+	Depends           []string `json:"depends"`
+	SpentBy           []string `json:"spentby"`
+	Bip125Replaceable bool     `json:"bip125-replaceable"`
+	Unbroadcast       bool     `json:"unbroadcast"`
+}
+
+// GetRawMemPool returns an object containing RawMemPool
+func (b *Bitcoind) GetMemPoolEntry(txid string) (*MemPoolEntry, error) {
+	// verbose = false,  mempool_sequence = true
+	r, err := b.client.call("getmempoolentry", []interface{}{txid})
+	if err = handleError(err, &r); err != nil {
+		return nil, err
+	}
+	rawMemPool := &MemPoolEntry{}
+	err = json.Unmarshal(r.Result, rawMemPool)
+	return rawMemPool, err
+}
+
 // See https://developer.bitcoin.org/reference/rpc/getblockchaininfo.html
 type BlockChainInfo struct {
 	Chain                   string  `json:"chain"`
