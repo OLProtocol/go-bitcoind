@@ -366,7 +366,7 @@ type UnspendTxOutput struct {
 
 // GetRawMemPool returns an object containing RawMemPool
 func (b *Bitcoind) GetUnspendTxOutput(txid string, outIndex int) (*UnspendTxOutput, error) {
-	r, err := b.client.call("getmempoolentry", []interface{}{txid, outIndex, true})
+	r, err := b.client.call("gettxout", []interface{}{txid, outIndex, true})
 	if err = handleError(err, &r); err != nil {
 		return nil, err
 	}
