@@ -350,6 +350,31 @@ func (b *Bitcoind) GetMemPoolEntry(txid string) (*MemPoolEntry, error) {
 	return rawMemPool, err
 }
 
+type UnspendTxOutput struct {
+	BestBlock     string  `json:"bestblock"`
+	Confirmations int     `json:"confirmations"`
+	Value         float64 `json:"value"`
+	ScriptPubKey  struct {
+		Asm     string `json:"asm"`
+		Desc    string `json:"desc"`
+		Hex     string `json:"hex"`
+		Address string `json:"address"`
+		Type    string `json:"type"`
+	} `json:"scriptPubKey"`
+	Coinbase bool `json:"coinbase"`
+}
+
+// GetRawMemPool returns an object containing RawMemPool
+func (b *Bitcoind) GetUnspendTxOutput(txid string, outIndex int) (*UnspendTxOutput, error) {
+	r, err := b.client.call("getmempoolentry", []interface{}{txid, outIndex, true})
+	if err = handleError(err, &r); err != nil {
+		return nil, err
+	}
+	unspendTxOutput := &UnspendTxOutput{}
+	err = json.Unmarshal(r.Result, unspendTxOutput)
+	return unspendTxOutput, err
+}
+
 // See https://developer.bitcoin.org/reference/rpc/getblockchaininfo.html
 type BlockChainInfo struct {
 	Chain                   string  `json:"chain"`
