@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"time"
 )
@@ -98,7 +98,7 @@ func (c *rpcClient) doTimeoutRequest(timer *time.Timer, req *http.Request) (*htt
 }
 
 // call prepare & exec the request
-func (c *rpcClient) call(method string, params interface{}) (rr rpcResponse, err error) {
+func (c *rpcClient) call(method string, params interface{}, opts ...interface{}) (rr rpcResponse, err error) {
 	connectTimer := time.NewTimer(time.Duration(c.timeout) * time.Second)
 	rpcR := rpcRequest{method, params, time.Now().UnixNano(), "1.0"}
 	payloadBuffer := &bytes.Buffer{}
@@ -125,11 +125,22 @@ func (c *rpcClient) call(method string, params interface{}) (rr rpcResponse, err
 	}
 	defer resp.Body.Close()
 
-	data, err := ioutil.ReadAll(resp.Body)
+	data, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return
 	}
 
-	err = json.Unmarshal(data, &rr)
+	if len(opts) == 0 {
+		err = json.Unmarshal(data, &rr)
+	} else {
+		returnRaw := opts[0].(bool)
+		if returnRaw {
+			rr = rpcResponse{
+				Id:     rpcR.Id,
+				Result: data,
+				Err:    nil}
+		}
+	}
+
 	return
 }

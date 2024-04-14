@@ -609,6 +609,19 @@ func (b *Bitcoind) GetRawTransaction(txId string, verbose bool) (rawTx interface
 	return
 }
 
+// SendRawTransaction returns raw transaction representation for given transaction id.
+func (b *Bitcoind) SendRawTransaction(signedTxHex string, maxfeerate float32) (txid string, err error) {
+	if maxfeerate <= 0.0 {
+		maxfeerate = 0.10 // default=0.10
+	}
+	r, err := b.client.call("sendrawtransaction", []interface{}{signedTxHex, maxfeerate})
+	if err = handleError(err, &r); err != nil {
+		return
+	}
+	txid = (string)(r.Result)
+	return
+}
+
 // GetReceivedByAccount Returns the total amount received by addresses with [account] in
 // transactions with at least [minconf] confirmations. If [account] is set to all return
 // will include all transactions to all accounts
