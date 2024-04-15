@@ -305,9 +305,9 @@ type RawMemPool struct {
 }
 
 // GetRawMemPool returns an object containing RawMemPool
-func (b *Bitcoind) GetRawMemPool() (*RawMemPool, error) {
+func (b *Bitcoind) GetRawMemPool(verbose, mempool_sequence bool) (*RawMemPool, error) {
 	// verbose = false,  mempool_sequence = true
-	r, err := b.client.call("getrawmempool", []interface{}{false, true})
+	r, err := b.client.call("getrawmempool", []interface{}{verbose, mempool_sequence})
 	if err = handleError(err, &r); err != nil {
 		return nil, err
 	}
