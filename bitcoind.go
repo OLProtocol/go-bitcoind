@@ -112,7 +112,7 @@ type BlockHeader struct {
 	Time              int64   `json:"time"`
 	Mediantime        int64   `json:"mediantime"`
 	Nonce             uint32  `json:"nonce"`
-	Bits              uint32  `json:"bits"`
+	Bits              string  `json:"bits"`
 	Difficulty        float64 `json:"difficulty"`
 	Chainwork         string  `json:"chainwork"`
 	Txes              int     `json:"nTx"`
