@@ -316,14 +316,14 @@ func (b *Bitcoind) GetRawMemPool(verbose, mempool_sequence bool) (*RawMemPool, e
 }
 
 type MemPoolEntry struct {
-	Vsize           int    `json:"vsize"`
-	Weight          int    `json:"weight"`
-	Time            int    `json:"time"`
-	Height          int    `json:"height"`
-	DescendantCount int    `json:"descendantcount"`
-	DescendantSize  int    `json:"descendantsize"`
-	AncestorCount   int    `json:"ancestorcount"`
-	AncestorSize    int    `json:"ancestorsize"`
+	Vsize           int64  `json:"vsize"`
+	Weight          int64  `json:"weight"`
+	Time            int64  `json:"time"`
+	Height          int64  `json:"height"`
+	DescendantCount int64  `json:"descendantcount"`
+	DescendantSize  int64  `json:"descendantsize"`
+	AncestorCount   int64  `json:"ancestorcount"`
+	AncestorSize    int64  `json:"ancestorsize"`
 	Wtxid           string `json:"wtxid"`
 	Fees            struct {
 		Base       float64 `json:"base"`
