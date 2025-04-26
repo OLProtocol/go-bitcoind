@@ -609,16 +609,12 @@ func (b *Bitcoind) GetRawTransaction(txId string, verbose bool) (rawTx interface
 }
 
 
-func (b *Bitcoind) TestMempoolAccept(signedTxHex string) (result interface{}, err error) {
-	r, err := b.client.call("testmempoolaccept", []interface{}{[]interface{}{signedTxHex}, 0.1})
+func (b *Bitcoind) TestMempoolAccept(signedTxs []string) (result []TransactionTestResult, err error) {
+	r, err := b.client.call("testmempoolaccept", []interface{}{signedTxs, 0.1})
 	if err = handleError(err, &r); err != nil {
 		return
 	}
-	var t []TransactionTestResult
-	err = json.Unmarshal(r.Result, &t)
-	if err == nil {
-		result = t[0]
-	}
+	err = json.Unmarshal(r.Result, &result)
 	return
 }
 
