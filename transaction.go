@@ -94,3 +94,11 @@ type TransactionOutSet struct {
 	HashSerialized  string  `json:"hash_serialized"`
 	TotalAmount     float64 `json:"total_amount"`
 }
+
+//"[{\"txid\":\"c1c581014b03354078714cd00743e0f3a73524977cc2c1da5c9bee87615188c1\",\"wtxid\":\"3875746858a497f1a3c2b5ae4a8f10a2d1210442f660972ec46f1564ce5a357f\",\"allowed\":false,\"reject-reason\":\"missing-inputs\"}]"
+type TransactionTestResult struct {
+	TxId   string `json:"txid"`
+	WTxId  string `json:"wtxid"`
+	Allowed bool   `json:"allowed"`
+	RejectReason string `json:"reject-reason"`
+}

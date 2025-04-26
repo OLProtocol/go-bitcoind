@@ -608,6 +608,20 @@ func (b *Bitcoind) GetRawTransaction(txId string, verbose bool) (rawTx interface
 	return
 }
 
+
+func (b *Bitcoind) TestMempoolAccept(signedTxHex string) (result interface{}, err error) {
+	r, err := b.client.call("testmempoolaccept", []interface{}{[]interface{}{signedTxHex}, 0.1})
+	if err = handleError(err, &r); err != nil {
+		return
+	}
+	var t []TransactionTestResult
+	err = json.Unmarshal(r.Result, &t)
+	if err == nil {
+		result = t[0]
+	}
+	return
+}
+
 // SendRawTransaction returns raw transaction representation for given transaction id.
 func (b *Bitcoind) SendRawTransaction(signedTxHex string, maxfeerate float32) (txid string, err error) {
 	if maxfeerate <= 0.0 {
